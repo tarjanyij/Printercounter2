@@ -1,0 +1,219 @@
+@model Printercounter2.ViewModels.CountersYearlyReportsViewModel
+
+@{
+    ViewData["Title"] = "Yearly report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h4>Yearly Report</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayFor(model => model.Printers.FirstOrDefault().PrinterName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Printers.FirstOrDefault().PrinterModel)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayFor(model => model.Printers.FirstOrDefault().PrinterBarcode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Printers.FirstOrDefault().PrinterIP)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayFor(model => model.Printers.FirstOrDefault().PrinterSN)
+        </dt>
+        <dt class="col-sm-10">
+            @Html.DisplayFor(model => model.Printers.FirstOrDefault().PrinterLocation)
+        </dt>
+
+    </dl>
+</div>
+<div class="d-flex">
+    <div class="mr-auto">
+        <a asp-controller="Counters" asp-action="Details" asp-route-id="@ViewBag.DetailsId" asp-route-dateList="@ViewBag.dateList">Back to List</a>
+    </div>
+    <div>
+             @Html.DropDownList("Years", (IEnumerable<SelectListItem>)Model.Years, new {@class="form-control-sm"})  
+          
+    </div>
+    &nbsp;
+   
+</div>
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+         @foreach (var item in Model.Months)
+            {
+                <th>
+                    @item
+                </th>
+                
+            }
+
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr>
+            @foreach (var item in Model.MonthsValue)
+            {
+                <td>
+                    @item.MontsValue
+                </td>
+                
+            }
+        </tr>
+        
+    </tbody>
+</table>
+<br />
+<div id="columnChart" class="columnChart chart col"></div>
+
+
+@section Scripts{
+    <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+     <script src="https://localhost:5001/js/chartinator.js"></script>
+     -->
+    <script src="~/lib/jquery/dist/jquery-1.12.4.js"></script>
+    <script src="~/lib/jquery/dist/jquery-ui.js"></script>
+    <script src="~/js/chartinator.js"></script>
+    
+    
+    
+    <script type="text/javascript">
+        jQuery(function ($) {
+
+            $("#Years").change(function () {
+                var year = $("#Years").val();
+                var url = document.location.href;
+                var pos = url.indexOf("?year=");
+                if (pos > 0) {
+                    var url = url.substring(0, pos);
+                }
+                var newUrl = url + '?year=' + year;
+                document.location.assign(newUrl);
+
+
+                });
+            //  Column Chart Example
+            var chart4 = $('#columnChart').chartinator({
+                // Custom Options ------------------------------------------------------
+                // note: This example uses js data arrays for data instead of HTML tables
+                // Columns - The columns data-array
+                columns: [
+                    { label: 'Date', type: 'string' },
+                    //   {label: '2013', type: 'number'},
+                    //   {label: '2014', type: 'number'},
+                    { label: 'Monthly paper consumption', type: 'number' }
+                ],
+                // Rows - The rows data-array
+                // If colIndexes array has values the row data will be inserted into the columns
+                // defined in the colindexes array. Otherwise the row data will be appended
+                // to any existing row data extracted from an HTML table or Google Sheet
+
+                rows: [
+                        @foreach (var item in Model.MonthsValue)
+                        {
+                                <text>
+                                  ['@item.Monts',
+                                        @if (item.MontsValue != "")
+                                        {
+                                            @item.MontsValue
+                                            
+                                        }
+                                         else 
+                                        {
+                                          @: 0
+                                         }
+                                  ],
+                                </text>
+
+
+                        }
+                    //['Januar ', 512]
+                ],
+                // The class to apply to the table element
+                tableClass: 'col-table',
+                // Create Table - String
+                // Create a basic HTML table or a Google Table Chart from chart data
+                // Options: false, 'basic-table', 'table-chart'
+                // Note: This table will replace an existing HTML table
+                //createTable: 'basic-table',
+                // The chart type - String
+                // Derived from the Google Charts visualization class name
+                // Default: 'BarChart'
+                // Use TitleCase names. eg. BarChart, PieChart, ColumnChart, Calendar, GeoChart, Table.
+                // See Google Charts Gallery for a complete list of Chart types
+                // https://developers.google.com/chart/interactive/docs/gallery
+                chartType: 'ColumnChart',
+                // The data title
+                // A title used to identify the set of data
+                // Used as a caption when generating an HTML table
+                dataTitle: 'Column Chart Data',
+                // The chart aspect ratio custom option - width/height
+                // Used to calculate the chart dimensions relative to the width or height
+                // this is overridden if the Google Chart's height and width options have values
+                // Suggested value: 1.25
+                // Default: false - not used
+                chartAspectRatio: 1.5,
+                // Google Column Chart Options
+                columnChart: {
+                    // Width of chart in pixels - Number
+                    // Default: automatic (unspecified)
+                    width: null,
+                    // Height of chart in pixels - Number
+                    // Default: automatic (unspecified)
+                    //height: 200,
+                    chartArea: {
+                        left: "10%",
+                        top: 30,
+                        width: "90%",
+                        height: "65%"
+                    },
+                    // The font size in pixels - Number
+                    // Or use css selectors as keywords to assign font sizes from the page
+                    // For example: 'body'
+                    // Default: false - Use Google Charts defaults
+                    //fontSize: 'body',
+                    // The font family name - String
+                    // Default: body font family
+                    fontName: 'Roboto',
+                    // Chart Title - String
+                    // Default: Table caption.
+                    //title: 'Column Chart',
+                    titleTextStyle: {
+                        // The font size in pixels - Number
+                        // Or use css selectors as keywords to assign font sizes from the page
+                        // For example: 'body'
+                        // Default: false - Use Google Charts defaults
+                        fontSize: 'h4'
+                    },
+                    legend: {
+                        // Legend position - String
+                        // Options: bottom, top, left, right, in, none.
+                        // Default: bottom
+                        position: 'none'
+                    },
+                    // Array of colours
+                    colors: ['#a82180', '#dd61b8', '#ff99e1'],
+                    // Stack values within a bar or column chart - Boolean
+                    // Default: false.
+                    isStacked: false,
+                    tooltip: {
+                        // Shows tooltip with values on hover - String
+                        // Options: focus, none.
+                        // Default: focus
+                        trigger: 'focus'
+                    }
+                },
+                // Show table as well as chart - String
+                // Options: 'show', 'hide', 'remove'
+                showTable: 'show'
+            });
+        }
+        );
+    </script>
+}

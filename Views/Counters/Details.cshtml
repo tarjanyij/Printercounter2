@@ -1,0 +1,110 @@
+﻿@model IEnumerable<Printercounter2.Models.Counter>
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    
+    <hr />
+    
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayFor(model => model.FirstOrDefault().Printer.PrinterName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstOrDefault().Printer.PrinterModel)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayFor(model => model.FirstOrDefault().Printer.PrinterBarcode)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.First().Printer.PrinterIP)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayFor(model => model.First().Printer.PrinterSN)
+        </dt>
+        <dt class = "col-sm-10">
+            @Html.DisplayFor(model => model.First().Printer.PrinterLocation)
+        </dt>
+
+    </dl>
+   
+</div>
+<div>
+
+    <a asp-controller="Counters" asp-action="Index" asp-route-dateList='@ViewBag.dateList'>Back to List</a>&nbsp;
+    <a asp-action="Monthly" asp-route-id="@Model.First().PrinterID" asp-route-dateList='@ViewBag.dateList'>Monthly report</a>
+    <a asp-action="Yearly" asp-route-id="@Model.First().PrinterID" asp-route-dateList='@ViewBag.dateList'>Yearly report</a>
+</div>
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Date_Counter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaperCounter)
+            </th>
+                        
+            <th>
+                @Html.DisplayNameFor(model => model.DailyPaperConsumption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TonerLevel)
+            </th>
+            
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Date_Counter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaperCounter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DailyPaperConsumption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TonerLevel)
+            </td>
+                       
+        </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !ViewBag.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !ViewBag.HasNextPage ? "disabled" : "";
+    var pervPage = 1;
+    if (ViewBag.pageNumber > 1)
+    {
+        pervPage = ViewBag.pageNumber - 1;
+    }
+   
+    if (ViewBag.pageNumber == null )
+    {
+        ViewBag.pageNumber = 1;
+    }
+
+    var nextPage = ViewBag.pageNumber + 1;
+}
+    <ul class="pagination pagination-sm justify-content-center">
+        <li class="page-item @prevDisabled"> @Html.ActionLink("Previous","Details","Counters", new {datelist=ViewBag.datelist,pageNumber=pervPage},new {@class = "page-link"})</li>
+        <!--<li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" asp-controller="Counters" asp-action="index" asp-route-datelist=@ViewBag.dateList asp-route-pageNumber="2">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+        <li class="page-item @nextDisabled">@Html.ActionLink("Next", "Details","Counters", new {datelist=ViewBag.datelist,pageNumber=nextPage},new {@class = "page-link"})</li>
+    </ul>
+   

@@ -1,0 +1,74 @@
+﻿@model Printercounter2.Models.Printer
+
+@{
+    ViewData["Title"] = "Edit printer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h4>Edit Printer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PrinterID" />
+            <div class="form-group">
+                <label asp-for="PrinterIP" class="control-label"></label>
+                <input asp-for="PrinterIP" class="form-control" />
+                <span asp-validation-for="PrinterIP" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrinterName" class="control-label"></label>
+                <input asp-for="PrinterName" class="form-control" />
+                <span asp-validation-for="PrinterName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrinterModel" class="control-label"></label>
+                <input asp-for="PrinterModel" class="form-control" />
+                <span asp-validation-for="PrinterModel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrinterDescription" class="control-label"></label>
+                <input asp-for="PrinterDescription" class="form-control" />
+                <span asp-validation-for="PrinterDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrinterSN" class="control-label"></label>
+                <input asp-for="PrinterSN" class="form-control" />
+                <span asp-validation-for="PrinterSN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrinterBarcode" class="control-label"></label>
+                <input asp-for="PrinterBarcode" class="form-control" />
+                <span asp-validation-for="PrinterBarcode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrinterLocation" class="control-label"></label>
+                <input asp-for="PrinterLocation" class="form-control" />
+                <span asp-validation-for="PrinterLocation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrinterTonerName" class="control-label"></label>
+                <input asp-for="PrinterTonerName" class="form-control" />
+                <span asp-validation-for="PrinterTonerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Active" class="control-label"></label>
+                <input type="checkbox" asp-for="Active" class="form-control" />
+                <span asp-validation-for="Active" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,24 @@
+@{
+    var prevDisabled = !ViewBag.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !ViewBag.HasNextPage ? "disabled" : "";
+    var pervPage = 1;
+    if (ViewBag.pageNumber > 1)
+    {
+        pervPage = ViewBag.pageNumber - 1;
+    }
+   
+    if (ViewBag.pageNumber == null )
+    {
+        ViewBag.pageNumber = 1;
+    }
+
+    var nextPage = ViewBag.pageNumber + 1;
+}
+    <ul class="pagination pagination-sm justify-content-center">
+        <li class="page-item @prevDisabled"> @Html.ActionLink("Previous", "index", new {datelist=ViewBag.datelist,pageNumber=pervPage},new {@class = "page-link"})</li>
+        <!--<li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" asp-controller="Counters" asp-action="index" asp-route-datelist=@ViewBag.dateList asp-route-pageNumber="2">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+        <li class="page-item @nextDisabled">@Html.ActionLink("Next", "index", new {datelist=ViewBag.datelist,pageNumber=nextPage},new {@class = "page-link"})</li>
+    </ul>
+   

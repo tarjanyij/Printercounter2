@@ -1,0 +1,132 @@
+﻿@model IEnumerable<Printercounter2.Models.Counter>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Printer)
+                
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Printer.PrinterBarcode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Printer.PrinterSN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaperCounter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TonerLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date_Counter)
+                 <div style="width:110px;">
+                
+                    <input type='text' class="form-control form-control-sm" id='datepicker' />
+                    <span class="input-group-sm">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                           
+                </div>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DailyPaperConsumption)
+            </th>
+            <th>
+
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count() == 0)
+        {
+       
+            <tr>
+                <td colspan="7">
+                    <p>Not found element this day yet!</p>
+                </td>
+
+            </tr>
+        }
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Printer.PrinterName)<br>
+                    <small>@Html.DisplayFor(modelItem => item.Printer.PrinterIP)</small>
+                   
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Printer.PrinterBarcode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Printer.PrinterSN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaperCounter)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TonerLevel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date_Counter)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DailyPaperConsumption)
+                </td>
+                <td>
+
+                    <a asp-action="Details" asp-route-id="@item.PrinterID"  asp-route-dateList="@ViewBag.dateList">Details</a>
+
+                </td>
+
+            </tr>
+        }
+
+
+    </tbody>
+</table>
+ <Partial name="_PaginationFooterPartial")/>
+
+
+<link rel="stylesheet" href="~/css/jquery-ui.css">
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery-1.12.4.js"></script>
+    <script src="~/lib/jquery/dist/jquery-ui.js"></script>
+    <script>
+
+        $("#datepicker").datepicker({
+            showAnim: "slideDown",
+            buttonImage: "calendar1.gif",
+            buttonImageOnly: true,
+            dateFormat: "yy-mm-dd"
+            });
+
+        @*var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
+
+        dateList = '@ViewBag.dateList';
+        alert(dateList);
+        if (dateList) { today = dateList; };
+        alert(today);
+        $("#datepicker").datepicker("setDate", today);*@
+
+        $("#datepicker").datepicker("setDate", "@ViewBag.dateList");
+        $("#datepicker").change(function () {
+
+            var dateList = $("#datepicker").val();
+            location.href = '@Url.Action("Index", "Counters")?datelist=' + dateList;
+        });
+    </script>
+}

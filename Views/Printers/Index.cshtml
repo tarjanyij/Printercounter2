@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Printercounter2.Models.Printer>
+
+@{
+    ViewData["Title"] = "Printer list";
+    Layout = "~/Views/Shared/_LayoutPrinters.cshtml";
+}
+
+<h1>Printer list</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div class="container-fluid">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrinterIP)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrinterName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrinterModel)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrinterDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrinterSN)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrinterBarcode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrinterLocation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrinterTonerName)
+                </th>
+                 <th>
+                    @Html.DisplayNameFor(model => model.Active)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PrinterIP)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PrinterName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PrinterModel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PrinterDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PrinterSN)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PrinterBarcode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PrinterLocation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PrinterTonerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Active)
+                    </td>
+                    <td>
+                        <ul class="nav" style="flex-wrap: nowrap; padding-right: 0.25rem; padding-left: 0.25rem;">
+                            <li class="nav-item">
+                                <a class="nav-link" style="padding-right: 0.25rem; padding-left: 0.25rem;" asp-action="Edit" asp-route-id="@item.PrinterID">Edit</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" style="padding-right: 0.25rem; padding-left: 0.25rem;" asp-action="Details" asp-route-id="@item.PrinterID">Details</a>
+                            </li>
+                            <li class="nav-item">
+       
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="nav-link"style="padding-right: 0.25rem; padding-left: 0.25rem;" asp-action="Delete" asp-route-id="@item.PrinterID">Delete</a>
+                                }
+                                else
+                                {
+                                    <a class="nav-link disabled" style="padding-right: 0.25rem; padding-left: 0.25rem;" href="#" >Delete</a>
+                                }
+                            </li>
+                        </ul>    
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <Partial name="_PaginationFooterPartial")/>
+</div>
